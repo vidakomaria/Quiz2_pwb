@@ -2,6 +2,7 @@
 require "config.php";
 $message = "";
 $warning = "";
+session_start();
 
 if (isset($_POST["username"]) && isset($_POST["password"])) {
     $username = $_POST["username"];
@@ -15,6 +16,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         $statement = $connection->prepare($data);
         $statement->execute([":username" => $username, ":password" => $password]);
         $message = "Data berhasil ditambah";
+        $_SESSION["username"] = $username;
+        $_SESSION["password"] = $password;
     }
 }
 ?>
