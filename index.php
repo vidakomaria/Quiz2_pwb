@@ -20,10 +20,12 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         if ($statement->execute([":username" => $username, ":password" => $password])) {
             $akun = $statement->fetchAll(PDO::FETCH_OBJ);
             foreach ($akun as $item) {
-                $printUsername = $item->username;
-                $printPw = $item->password;
+                $hasilUsername = $item->username;
+                $hasilPw = $item->password;
                 $benar = "Login Berhasil";
                 $hasil = True;
+                setcookie("username", $hasilUsername, time() + (86400 * 3), "/");
+                setcookie("password", $hasilPw, time() + (86400 * 3), "/");
             }
         }
         if ($hasil == False) {
@@ -31,6 +33,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         }
     };
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +72,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                     if (!empty($benar)) { ?>
                     <div class="alert alert-success" role="alert">
                         <h4 class="alert-heading"><?= $benar ?></h4>
-                        <p> <?= "Username : " . $username ?></p>
+                        <p> <?= "Username : " . $_COOKIE['username'] ?></p>
                         <hr>
                     </div>
                     <?php
